@@ -13,6 +13,7 @@ pygame.display.set_caption("A4 Peli")
 # RGB värit
 valkoinen = (255,255,255)
 harmaa = (128,128,128)
+punainen = (255,0,0)
 musta = (0,0,0)
 # Taustaväri
 naytto.fill(valkoinen)
@@ -38,7 +39,7 @@ teksti_rect = teksti.get_rect(center=(leveys//2, korkeus//5.5))  # Positiod
 matikka_rect = matikka.get_rect()
 
 # Matikan nopeus
-m_nopeus = [10,20]
+m_nopeus = [15,25]
 
 # Ajastin
 aikaaJaljella = 60
@@ -47,14 +48,15 @@ ajastin_rect = ajastinTeksti.get_rect(center=(leveys//2, korkeus//4))
 aloitusAika = pygame.time.get_ticks()
 
 # Hahmon nopeus ja positio
-nopeus = 5
+nopeus = 10
 x = leveys // 2  # Hahmon X-positio
 y = korkeus - hahmo.get_height() - taso.get_height()  #  Hahmon Y-positio
 
 
 
+
 # Pelilogiikka, pyörii kunnes käyttäjä painaa ESC-näppäintä
-# tai sulkee välilehden
+# tai sulkee välilehden, tai kun häviää tai voittaa
 while True:
     for event in pygame.event.get():  # Etsii tapahtumia
         if event.type == pygame.QUIT:  # Jos pelaaja sulkee ikkunan
@@ -71,9 +73,17 @@ while True:
     aikaaJaljella = pygame.time.get_ticks() - aloitusAika
     aikaaJaljella = max(0, 60 - int(aikaaJaljella / 1000))
     if aikaaJaljella <= 0:
-        print("Voitit pelin!")
+        # Päivitetään näytölle voittoruutu
+        naytto.fill(valkoinen)
+        popup_font = pygame.font.SysFont('Arial', 35)
+        popup_text = popup_font.render('You can skip your math homework for now...', True, (0,0,0))
+        popup_rect = popup_text.get_rect(center=(leveys//2, korkeus//2.5))
+        naytto.blit(popup_text, popup_rect)
+        pygame.display.update()
+        pygame.time.wait(3000)  # Viesti pysyy ruudulla 3 sekunnin ajan
+        # Lopetetaan peli
         pygame.quit()
-        sys.exit() 
+        sys.exit()
     
     # Hahmo liikkuu näppäimen mukaan
     if nappaimet[pygame.K_a]:  # Jos painetaan A
@@ -108,10 +118,18 @@ while True:
 
     # Tarkistetaan osuuko hahmo kirjaan
     if hahmo_rect.colliderect(matikka_rect):
-        print("Hävisit pelin!")
+        # Päivitetään näytölle häviämisruutu
+        naytto.fill(valkoinen)
+        popup_font = pygame.font.SysFont('Arial', 35)
+        popup_text = popup_font.render('Do your math homework!', True, (0,0,0))
+        popup_rect = popup_text.get_rect(center=(leveys//2, korkeus//2.5))
+        naytto.blit(popup_text, popup_rect)
+        pygame.display.update()
+        pygame.time.wait(3000)  # Viesti pysyy ruudulla 3 sekunnin ajan
+        # Lopetetaan peli
         pygame.quit()
         sys.exit()
-        
+
     # Päivitetään ajastimen tekstiä
     ajastinTeksti = font.render('Time: ' + str(aikaaJaljella), True, musta)  # Päivitetään timerin tekstiä
 
