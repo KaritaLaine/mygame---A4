@@ -43,12 +43,14 @@ aikaaJaljella = 60
 timer_text = font.render('Time: ' + str(aikaaJaljella), True, musta)  # Update timer text
 timer_rect = timer_text.get_rect(center=(leveys//2, korkeus//4))
 
-start_time = pygame.time.get_ticks()
+aloitusAika = pygame.time.get_ticks()
+
 
 # Hahmon nopeus
 speed = 5
 x = leveys // 2  # Hahmon X-positio
 y = korkeus - hahmo.get_height() - platform.get_height()  #  Hahmon Y-positio
+
 
 # Pelilogiikka, pyörii kunnes käyttäjä painaa ESC-näppäintä
 # tai sulkee välilehden
@@ -65,11 +67,12 @@ while True:
     # Pelaaja painaa näppäintä
     keys = pygame.key.get_pressed()
 
-    elapsed_time = pygame.time.get_ticks() - start_time
-    aikaaJaljella = max(0, 60 - int(elapsed_time / 1000))
+    aikaaJaljella = pygame.time.get_ticks() - aloitusAika
+    aikaaJaljella = max(0, 60 - int(aikaaJaljella / 1000))
     if aikaaJaljella <= 0:
-        print("Aika loppui! Peli päättyy...")
-        # Add game over logic here
+        print("Voitit pelin!")
+        pygame.quit()
+        sys.exit() 
     
     # Hahmo liikkuu näppäimen mukaan
     if keys[pygame.K_a]:  # Jos painetaan A
@@ -86,9 +89,9 @@ while True:
     naytto.blit(hahmo, (x, y))
     naytto.blit(teksti, teksti_rect)
     
-    naytto.fill(valkoinen, timer_rect)  # Fill the area where the old timer text was with the background color
-    timer_text = font.render('Time: ' + str(aikaaJaljella), True, musta)  # Update timer text
-    naytto.blit(timer_text, timer_rect)  # Blit the updated timer text to the screen
+    naytto.fill(valkoinen, timer_rect)  # Täytetään timerin alue valkoisella
+    timer_text = font.render('Time: ' + str(aikaaJaljella), True, musta)  # Päivitetään timerin tekstiä
+    naytto.blit(timer_text, timer_rect)  # Laitetaan päivitetty teksti näytölle
     
 
 
