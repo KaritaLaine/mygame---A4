@@ -1,7 +1,13 @@
 import pygame
 import sys 
 from pygame.locals import *
+from pygame import mixer
 pygame.init()
+mixer.init()
+
+# Ladataan musiikki ja asetetaan sen volume
+mixer.music.load("panic.mp3")
+mixer.music.set_volume(0.2)
 
 
 # Näyttö
@@ -18,6 +24,8 @@ musta = (0,0,0)
 # Ladattavat objektit
 hahmo = pygame.image.load("hahmo.jpg").convert()
 matikka = pygame.image.load("matikka.jpg").convert()
+# Looppaa musiikkia
+mixer.music.play(-1,0.0)
 
 # Taso
 taso = pygame.Surface((leveys, 80))  
