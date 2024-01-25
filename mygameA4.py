@@ -49,7 +49,25 @@ nopeus = 10
 x = leveys // 2  # Hahmon X-positio
 y = korkeus - hahmo.get_height() - taso.get_height()  #  Hahmon Y-positio
 
+# Pelin aloitus ruutu
+peli_aloitettu = False
+aloitus_fontti = pygame.font.SysFont('Arial', 35)
+aloitus_teksti = aloitus_fontti.render('Press SPACE key to start', True, musta)
 
+while not peli_aloitettu:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        # Kun pelaaja painaa välilyöntiä, peli alkaa
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                peli_aloitettu = True
+    
+    # Päivitetään näytölle aloitus ruutu
+    naytto.fill(valkoinen)
+    naytto.blit(aloitus_teksti, (leveys//2 - aloitus_teksti.get_width()//2, korkeus//2 - aloitus_teksti.get_height()//2))
+    pygame.display.update()
 
 
 # Pelilogiikka, pyörii kunnes käyttäjä painaa ESC-näppäintä
@@ -73,7 +91,7 @@ while True:
         # Päivitetään näytölle voittoruutu
         naytto.fill(valkoinen)
         popup_font = pygame.font.SysFont('Arial', 35)
-        popup_teksti = popup_font.render('You can skip your math homework for now...', True, (0,0,0))
+        popup_teksti = popup_font.render('You can skip your math homework for now...', True, musta)
         popup_rect = popup_teksti.get_rect(center=(leveys//2, korkeus//2.5))
         naytto.blit(popup_teksti, popup_rect)
         pygame.display.update()
@@ -116,7 +134,7 @@ while True:
         # Päivitetään näytölle häviämisruutu
         naytto.fill(valkoinen)
         popup_font = pygame.font.SysFont('Arial', 35)
-        popup_teksti = popup_font.render('Do your math homework!', True, (0,0,0))
+        popup_teksti = popup_font.render('Do your math homework!', True, musta)
         popup_rect = popup_teksti.get_rect(center=(leveys//2, korkeus//2.5))
         naytto.blit(popup_teksti, popup_rect)
         pygame.display.update()
