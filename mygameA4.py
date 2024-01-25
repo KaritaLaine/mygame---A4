@@ -13,10 +13,7 @@ pygame.display.set_caption("A4 Peli")
 # RGB värit
 valkoinen = (255,255,255)
 harmaa = (128,128,128)
-punainen = (255,0,0)
 musta = (0,0,0)
-# Taustaväri
-naytto.fill(valkoinen)
 
 # Ladattavat objektit
 hahmo = pygame.image.load("hahmo.jpg").convert()
@@ -24,7 +21,7 @@ matikka = pygame.image.load("matikka.jpg").convert()
 
 # Taso
 taso = pygame.Surface((leveys, 80))  
-taso.fill(harmaa)  # Täytetään taso vihreällä
+taso.fill(harmaa)  # Täytetään taso harmaalla
 
 # Asetetaan taso peliruudun alareunaan
 taso_rect = taso.get_rect()
@@ -33,17 +30,17 @@ taso_rect.bottom = korkeus
 # Asetetaan teksti peliin
 font = pygame.font.SysFont('Arial', 25) # Fontti
 teksti = font.render('Mission: Survive', True, musta)  # Teksti ja väria
-teksti_rect = teksti.get_rect(center=(leveys//2, korkeus//5.5))  # Positiod
+teksti_rect = teksti.get_rect(center=(leveys//2, korkeus//5.5))  # Positio
 
 # Asetetaan kirja peliin
 matikka_rect = matikka.get_rect()
 
-# Matikan nopeus
+# Matikan kirjan liikkumisnopeus (x,y)
 m_nopeus = [15,25]
 
 # Ajastin
 aikaaJaljella = 60
-ajastinTeksti = font.render('Time: ' + str(aikaaJaljella), True, musta)  # Update timer texta
+ajastinTeksti = font.render('Time: ' + str(aikaaJaljella), True, musta) 
 ajastin_rect = ajastinTeksti.get_rect(center=(leveys//2, korkeus//4))
 aloitusAika = pygame.time.get_ticks()
 
@@ -91,7 +88,6 @@ while True:
     if nappaimet[pygame.K_d]:  # Jos painetaan D
         x += nopeus  # Hahmo liikkuu oikealle
         
-        
     # Matikan kirja liikkuu joka iteraatiolla
     matikka_rect.move_ip(m_nopeus)
     
@@ -100,7 +96,6 @@ while True:
         m_nopeus[0] = -m_nopeus[0] 
     if matikka_rect.top < 0 or matikka_rect.bottom > korkeus: 
         m_nopeus[1] = -m_nopeus[1] 
-
 
     # Matikan kirja kimpoaa lattiasta
     if taso_rect.colliderect(matikka_rect):
