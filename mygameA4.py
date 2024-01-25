@@ -73,9 +73,9 @@ while True:
         # Päivitetään näytölle voittoruutu
         naytto.fill(valkoinen)
         popup_font = pygame.font.SysFont('Arial', 35)
-        popup_text = popup_font.render('You can skip your math homework for now...', True, (0,0,0))
-        popup_rect = popup_text.get_rect(center=(leveys//2, korkeus//2.5))
-        naytto.blit(popup_text, popup_rect)
+        popup_teksti = popup_font.render('You can skip your math homework for now...', True, (0,0,0))
+        popup_rect = popup_teksti.get_rect(center=(leveys//2, korkeus//2.5))
+        naytto.blit(popup_teksti, popup_rect)
         pygame.display.update()
         pygame.time.wait(3000)  # Viesti pysyy ruudulla 3 sekunnin ajan
         # Lopetetaan peli
@@ -106,7 +106,7 @@ while True:
             m_nopeus[0] = -m_nopeus[0]
             
     # Varmistetaan, että hahmo pysyy tasoin päällä
-    x = max(0, min(leveys - hahmo.get_width(), x))  
+    x = max(0, min(leveys - hahmo.get_width(), x))
 
     # Hahmon positio
     hahmo_rect = hahmo.get_rect(topleft=(x, y))
@@ -116,11 +116,11 @@ while True:
         # Päivitetään näytölle häviämisruutu
         naytto.fill(valkoinen)
         popup_font = pygame.font.SysFont('Arial', 35)
-        popup_text = popup_font.render('Do your math homework!', True, (0,0,0))
-        popup_rect = popup_text.get_rect(center=(leveys//2, korkeus//2.5))
-        naytto.blit(popup_text, popup_rect)
+        popup_teksti = popup_font.render('Do your math homework!', True, (0,0,0))
+        popup_rect = popup_teksti.get_rect(center=(leveys//2, korkeus//2.5))
+        naytto.blit(popup_teksti, popup_rect)
         pygame.display.update()
-        pygame.time.wait(3000)  # Viesti pysyy ruudulla 3 sekunnin ajan
+        pygame.time.wait(3000) # Viesti pysyy ruudulla 3 sekunnin ajan
         # Lopetetaan peli
         pygame.quit()
         sys.exit()
