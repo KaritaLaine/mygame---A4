@@ -44,7 +44,7 @@ teksti_rect = teksti.get_rect(center=(leveys//2, korkeus//5.5))  # Positio
 matikka_rect = matikka.get_rect()
 
 # Matikan kirjan liikkumisnopeus (x,y)
-m_nopeus = [15,25]
+m_nopeus = [10,15]
 
 # Ajastin
 aikaaJaljella = 60
