@@ -9,7 +9,6 @@ mixer.init()
 mixer.music.load("panic.mp3")
 mixer.music.set_volume(0.2)
 
-
 # Näyttö
 korkeus = 700
 leveys = 900
@@ -54,8 +53,8 @@ aloitusAika = pygame.time.get_ticks()
 
 # Hahmon nopeus ja positio
 nopeus = 10
-x = leveys // 2  # Hahmon X-positio
-y = korkeus - hahmo.get_height() - taso.get_height()  #  Hahmon Y-positio
+x = leveys // 2  # Hahmon X-positio, keskellä näyttöä
+y = korkeus - hahmo.get_height() - taso.get_height()  #  Hahmon Y-positio, asetettuna tason päälle
 
 # Pelin aloitus ruutu
 peli_aloitettu = False
@@ -131,8 +130,15 @@ while True:
         else:
             m_nopeus[0] = -m_nopeus[0]
             
-    # Varmistetaan, että hahmo pysyy tasoin päällä
-    x = max(0, min(leveys - hahmo.get_width(), x))
+    # Varmistetaan, että hahmo pysyy tason päällä
+        # Jos hahmon x-koordinaatti on pienempi kuin tason vasemman reunan 
+        # x-koordinaatti, asetetaan hahmo tason vasempaan reunaan
+    if x < 0:
+        x = 0
+    # Jos hahmon x-koordinaatti on suurempi kuin tason oikean reunan, 
+        # x-koordinaatti, asetetaan hahmo tason oikeaan reunaan
+    elif x > (leveys - hahmo.get_width()):
+        x = (leveys - hahmo.get_width())
 
     # Hahmon positio
     hahmo_rect = hahmo.get_rect(topleft=(x, y))
