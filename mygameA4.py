@@ -86,7 +86,7 @@ def vaikeusasteet():
                     return 'insinoori'
                 if calculus_button.collidepoint(mouse_pos):
                     return 'calculus'
-                    # Vaikeusastekoodit!!!!! TODO
+    
 
         # Piirretään napit näytölle
         pygame.draw.rect(naytto, [0, 0, 0], insinoori_button)  
@@ -98,6 +98,7 @@ def vaikeusasteet():
         
         # Päivitetään muutokset
         pygame.display.update()
+
 
 # Funktio menu-screenille
 def main_menu():
@@ -147,10 +148,24 @@ def main_menu():
         # paluuarvo muuttujaan difficulty (eli insinööri tai calculus)
 difficulty = main_menu()
 
+# Jos vaikeusaste on calculus
+if difficulty == 'calculus':
+    # Muutetaan ikoneita 
+    matikka = pygame.image.load("calc.png").convert()
+    hahmo = pygame.image.load("hahmo2.png").convert()
+    taso.fill([255,0,0])
+
+    # Vaihdetaan pelin nopeutta
+    m_nopeus = [20,20]
+
+    # Muutetaan musiikkia!
+
+
+
 # Pelilogiikka, pyörii kunnes käyttäjä painaa ESC-näppäintä
 # tai sulkee välilehden, tai kun häviää tai voittaa
 while True:
-    if difficulty == 'insinoori':
+    if difficulty == 'insinoori' or difficulty == 'calculus':
     
         for event in pygame.event.get():  # Etsii tapahtumia
             if event.type == pygame.QUIT:  # Jos pelaaja sulkee ikkunan
