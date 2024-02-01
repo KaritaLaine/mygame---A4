@@ -157,8 +157,9 @@ if difficulty == 'calculus':
     # Tekstien väri
     color = punainen
 
-    # Vaihdetaan pelin nopeutta
-    m_nopeus = [25,20]
+    # Vaihdetaan pelin ja hahmon nopeutta
+    m_nopeus = [30,30]
+    nopeus = 15
 
     # Vaihdetaan musiikkia
     mixer.music.load("running.mp3")
