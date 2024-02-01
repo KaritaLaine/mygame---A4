@@ -13,6 +13,7 @@ pygame.display.set_caption("A4 Peli")
 
 # RGB värit
 valkoinen = (255,255,255)
+punainen = (255,0,0)
 harmaa = (128,128,128)
 musta = (0,0,0)
 
@@ -38,10 +39,8 @@ taso.fill(harmaa)  # Täytetään taso harmaalla
 taso_rect = taso.get_rect()
 taso_rect.bottom = korkeus
 
-# Asetetaan teksti peliin
+# Asetetaan fontti
 font = pygame.font.SysFont('Arial', 25) # Fontti
-teksti = font.render('Mission: Survive', True, musta)  # Teksti ja väria
-teksti_rect = teksti.get_rect(center=(leveys//2, korkeus//5.5))  # Positio
 
 # Asetetaan kirja peliin
 matikka_rect = matikka.get_rect()
@@ -62,6 +61,7 @@ y = korkeus - hahmo.get_height() - taso.get_height()  #  Hahmon Y-positio, asete
 
 # Asetetaan taustakuva
 naytto.blit(taustakuva, (-60, -75))
+
 
 # Asetetaan funktio vaikeusastevalikolle
 def vaikeusasteet():
@@ -90,7 +90,6 @@ def vaikeusasteet():
                 if calculus_button.collidepoint(mouse_pos):
                     return 'calculus'
     
-
         # Piirretään napit näytölle
         pygame.draw.rect(naytto, [0, 0, 0], insinoori_button)  
         pygame.draw.rect(naytto, [0, 0, 0], calculus_button)
@@ -135,7 +134,6 @@ def main_menu():
                     pygame.quit()
                     sys.exit()
                 
-    
         # Piirretään napit näytölle
         pygame.draw.rect(naytto, [0, 0, 0], start_button)  
         pygame.draw.rect(naytto, [0, 0, 0], quit_button) 
@@ -157,6 +155,7 @@ if difficulty == 'calculus':
     matikka = pygame.image.load("calc.png").convert()
     hahmo = pygame.image.load("hahmo2.png").convert()
     taso.fill([255,127,80])
+    color = punainen
 
     # Vaihdetaan pelin nopeutta
     m_nopeus = [25,20]
@@ -164,6 +163,12 @@ if difficulty == 'calculus':
     # Muutetaan musiikkia!
     mixer.music.load("running.mp3")
     mixer.music.play(-1,0.0)
+elif difficulty == 'insinoori':
+    color = musta
+
+# Pelin tehtäväteksti
+teksti = font.render('Mission: Survive', True, color)  # Teksti ja väri
+teksti_rect = teksti.get_rect(center=(leveys//2, korkeus//5.5))  # Positio
 
 # Hahmon suunta
 direction = 'right'
@@ -262,7 +267,7 @@ while True:
         sys.exit()
 
     # Päivitetään ajastimen tekstiä
-    ajastinTeksti = font.render('Time: ' + str(aikaaJaljella), True, musta)  # Päivitetään timerin tekstiä
+    ajastinTeksti = font.render('Time: ' + str(aikaaJaljella), True, color)  # Päivitetään timerin tekstiä
 
     # Blitataan opjektit näytölle
     naytto.fill(valkoinen) 
