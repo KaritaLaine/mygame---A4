@@ -111,10 +111,9 @@ def main_menu():
     start_button = pygame.Rect(leveys//2 - 50, korkeus//2, 100, 50) 
     quit_button = pygame.Rect(leveys//2 - 50, korkeus//2 + 60, 100, 50)
     # Nappien tekstit
-    start_text = fontti.render('Start', True, (255, 255,255))  # valkoinen
-    quit_text = fontti.render('Quit', True, (255, 255, 255))  # valkoinen
+    start_text = fontti.render('Start', True, (255, 255,255))
+    quit_text = fontti.render('Quit', True, (255, 255, 255))
     
-
     while menu:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -155,15 +154,19 @@ if difficulty == 'calculus':
     matikka = pygame.image.load("calc.png").convert()
     hahmo = pygame.image.load("hahmo2.png").convert()
     taso.fill([255,127,80])
+    # Tekstien väri
     color = punainen
 
     # Vaihdetaan pelin nopeutta
     m_nopeus = [25,20]
 
-    # Muutetaan musiikkia!
+    # Vaihdetaan musiikkia
     mixer.music.load("running.mp3")
     mixer.music.play(-1,0.0)
+
+# Jos vaikeusaste on insinööri
 elif difficulty == 'insinoori':
+    # Tekstien väri
     color = musta
 
 # Pelin tehtäväteksti
@@ -207,7 +210,6 @@ while True:
         pygame.quit()
         sys.exit()
     
-
     # Hahmo liikkuu näppäimen mukaan
     if nappaimet[pygame.K_a]:  # Jos painetaan A
         if direction != 'left':  # Tarkistaa onko hahmo käännetty vasemmalle
