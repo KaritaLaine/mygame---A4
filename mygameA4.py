@@ -153,13 +153,18 @@ if difficulty == 'calculus':
     # Muutetaan ikoneita 
     matikka = pygame.image.load("calc.png").convert()
     hahmo = pygame.image.load("hahmo2.png").convert()
-    taso.fill([255,0,0])
+    taso.fill([255,127,80])
 
     # Vaihdetaan pelin nopeutta
     m_nopeus = [20,20]
 
     # Muutetaan musiikkia!
+    mixer.music.load("running.mp3")
+    mixer.music.set_volume(0.5)
 
+
+# Hahmon suunta
+direction = 'right'
 
 
 # Pelilogiikka, pyörii kunnes käyttäjä painaa ESC-näppäintä
@@ -194,10 +199,17 @@ while True:
         pygame.quit()
         sys.exit()
     
+
     # Hahmo liikkuu näppäimen mukaan
     if nappaimet[pygame.K_a]:  # Jos painetaan A
-        x -= nopeus  # hahmo liikkuu vasemmalle
+        if direction != 'left':  # Tarkistaa onko hahmo käännetty vasemmalle
+            hahmo = pygame.transform.flip(hahmo, True, False)  # Käännetään hahmoa
+            direction = 'left'  # Päivitetään suunta
+        x -= nopeus  # Hahmo liikkuu vasemmalle
     if nappaimet[pygame.K_d]:  # Jos painetaan D
+        if direction != 'right':
+            hahmo = pygame.transform.flip(hahmo, True, False)  
+            direction = 'right' 
         x += nopeus  # Hahmo liikkuu oikealle
         
     # Matikan kirja liikkuu joka iteraatiolla
