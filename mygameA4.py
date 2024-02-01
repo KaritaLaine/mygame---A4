@@ -5,10 +5,6 @@ from pygame import mixer
 pygame.init()
 mixer.init()
 
-# Ladataan musiikki ja asetetaan sen volume
-mixer.music.load("panic.mp3")
-mixer.music.set_volume(0.2)
-
 # Näyttö
 korkeus = 700
 leveys = 900
@@ -24,7 +20,14 @@ musta = (0,0,0)
 hahmo = pygame.image.load("hahmo.jpg").convert()
 matikka = pygame.image.load("matikka.jpg").convert()
 taustakuva = pygame.image.load('matikkaa.jpeg').convert()
-# Looppaa musiikkia
+# Ladataan musiikki ja asetetaan sen volume
+mixer.music.load("panic.mp3")
+# Voitto ja häviöbiisit
+voitto = mixer.Sound("wow.mp3")
+havio = mixer.Sound("wahwah.mp3")
+
+# Looppaa musiikkia, asetetaan musiikin volume
+mixer.music.set_volume(0.2)
 mixer.music.play(-1,0.0)
 
 # Taso
@@ -156,16 +159,14 @@ if difficulty == 'calculus':
     taso.fill([255,127,80])
 
     # Vaihdetaan pelin nopeutta
-    m_nopeus = [20,20]
+    m_nopeus = [25,20]
 
     # Muutetaan musiikkia!
     mixer.music.load("running.mp3")
-    mixer.music.set_volume(0.5)
-
+    mixer.music.play(-1,0.0)
 
 # Hahmon suunta
 direction = 'right'
-
 
 # Pelilogiikka, pyörii kunnes käyttäjä painaa ESC-näppäintä
 # tai sulkee välilehden, tai kun häviää tai voittaa
@@ -189,6 +190,8 @@ while True:
     if aikaaJaljella <= 0:
         # Päivitetään näytölle voittoruutu
         naytto.fill(valkoinen)
+        voitto.play()
+        mixer.music.set_volume(0.1)
         popup_font = pygame.font.SysFont('Arial', 35)
         popup_teksti = popup_font.render('You can skip your math homework for now...', True, musta)
         popup_rect = popup_teksti.get_rect(center=(leveys//2, korkeus//2.5))
@@ -211,7 +214,7 @@ while True:
             hahmo = pygame.transform.flip(hahmo, True, False)  
             direction = 'right' 
         x += nopeus  # Hahmo liikkuu oikealle
-        
+
     # Matikan kirja liikkuu joka iteraatiolla
     matikka_rect.move_ip(m_nopeus)
     
@@ -246,6 +249,8 @@ while True:
     if hahmo_rect.colliderect(matikka_rect):
         # Päivitetään näytölle häviämisruutu
         naytto.fill(valkoinen)
+        havio.play()
+        mixer.music.set_volume(0.1)
         popup_font = pygame.font.SysFont('Arial', 35)
         popup_teksti = popup_font.render('Do your math homework!', True, musta)
         popup_rect = popup_teksti.get_rect(center=(leveys//2, korkeus//2.5))
