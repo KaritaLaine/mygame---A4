@@ -43,7 +43,7 @@ teksti_rect = teksti.get_rect(center=(leveys//2, korkeus//5.5))  # Positio
 matikka_rect = matikka.get_rect()
 
 # Matikan kirjan liikkumisnopeus (x,y)
-m_nopeus = [10,15]
+m_nopeus = [15,15]
 
 # Ajastin
 aikaaJaljella = 60
@@ -56,39 +56,100 @@ nopeus = 10
 x = leveys // 2  # Hahmon X-positio, keskellä näyttöä
 y = korkeus - hahmo.get_height() - taso.get_height()  #  Hahmon Y-positio, asetettuna tason päälle
 
-# Pelin aloitus ruutu
-peli_aloitettu = False
-aloitus_fontti = pygame.font.SysFont('Arial', 35)
-aloitus_teksti = aloitus_fontti.render('Press SPACE key to start', True, musta)
+start_screen_image = pygame.image.load('matikkaa.jpeg')
+naytto.blit(start_screen_image, (-60, -75))
+pygame.display.update()
 
-while not peli_aloitettu:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-        # Kun pelaaja painaa välilyöntiä, peli alkaa
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                peli_aloitettu = True
+def difficulty_menu():
+    difficulty_menu = True
+    button_font = pygame.font.SysFont('Arial', 20)
+    easy_button = pygame.Rect(leveys//2 - 50, korkeus//2, 100, 50)  # Easy button
+    hard_button = pygame.Rect(leveys//2 - 50, korkeus//2 + 60, 100, 50)  # Hard button
+
+    easy_text = button_font.render('Insinööri', True, (255, 255, 255))  # valkoinen
+    hard_text = button_font.render('Calculus ', True, (255, 255, 255))  # valkoinen
+
+    while difficulty_menu:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = event.pos  # gets mouse position
+                # checks if mouse position is over the button
+                if easy_button.collidepoint(mouse_pos):
+                    print('Easy button was pressed at {0}'.format(mouse_pos))
+                    return 'easy'
+                    
+                if hard_button.collidepoint(mouse_pos):
+                    print('Hard button was pressed at {0}'.format(mouse_pos))
+                    return 'hard'
+                    # Add code here to set difficulty to hard
+
+        # draw button
+        pygame.draw.rect(naytto, [0, 0, 0], easy_button)  # draw button
+        pygame.draw.rect(naytto, [0, 0, 0], hard_button)  # draw button
+
+        # draw text on buttons
+        naytto.blit(easy_text, (easy_button.x + (easy_button.width - easy_text.get_width()) // 2, easy_button.y + (easy_button.height - easy_text.get_height()) // 2))
+        naytto.blit(hard_text, (hard_button.x + (hard_button.width - hard_text.get_width()) // 2, hard_button.y + (hard_button.height - hard_text.get_height()) // 2))
+
+        pygame.display.update()
+def main_menu():
+    menu = True
+    button_font = pygame.font.SysFont('Arial', 20)
+    start_button = pygame.Rect(leveys//2 - 50, korkeus//2, 100, 50)  # Start button
+    quit_button = pygame.Rect(leveys//2 - 50, korkeus//2 + 60, 100, 50)  # Quit button
     
-    # Päivitetään näytölle aloitus ruutu
-    naytto.fill(valkoinen)
-    naytto.blit(aloitus_teksti, (leveys//2 - aloitus_teksti.get_width()//2, korkeus//2 - aloitus_teksti.get_height()//2))
-    pygame.display.update()
 
+    start_text = button_font.render('Start', True, (255, 255,255))  # valkoinen
+    quit_text = button_font.render('Quit', True, (255, 255, 255))  # valkoinen
+    
 
+    while menu:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = event.pos  # gets mouse position
+                # checks if mouse position is over the button
+                if start_button.collidepoint(mouse_pos):
+                    # prints current location of mouse
+                    print('button was pressed at {0}'.format(mouse_pos))
+                    return difficulty_menu()
+                if quit_button.collidepoint(mouse_pos):
+                    pygame.quit()
+                    sys.exit()
+                
+    
+        # Napit
+        pygame.draw.rect(naytto, [0, 0, 0], start_button)  # draw button
+        pygame.draw.rect(naytto, [0, 0, 0], quit_button)  # draw button
+        
+        #Teksti napeille
+        naytto.blit(start_text, (start_button.x + (start_button.width - start_text.get_width()) // 2, start_button.y + (start_button.height - start_text.get_height()) // 2))
+        naytto.blit(quit_text, (quit_button.x + (quit_button.width - quit_text.get_width()) // 2, quit_button.y + (quit_button.height - quit_text.get_height()) // 2))
+        
+        
+        pygame.display.update()
+
+# Call the main menu function before your game loop
+difficulty = main_menu()
 # Pelilogiikka, pyörii kunnes käyttäjä painaa ESC-näppäintä
 # tai sulkee välilehden, tai kun häviää tai voittaa
 while True:
-    for event in pygame.event.get():  # Etsii tapahtumia
-        if event.type == pygame.QUIT:  # Jos pelaaja sulkee ikkunan
-            pygame.quit()  # Ikkuna sulkeutuu
-            sys.exit()  # Peli sulkeutuu
-        if event.type == KEYDOWN:  # Jos pelaaja painaa jotakin näppäintä
-            if event.key == K_ESCAPE:  # Jos näppäin on ESC
-                pygame.quit()
-                sys.exit()
+    if difficulty == 'easy':
     
+        for event in pygame.event.get():  # Etsii tapahtumia
+            if event.type == pygame.QUIT:  # Jos pelaaja sulkee ikkunan
+                pygame.quit()  # Ikkuna sulkeutuu
+                sys.exit()  # Peli sulkeutuu
+            if event.type == KEYDOWN:  # Jos pelaaja painaa jotakin näppäintä
+                if event.key == K_ESCAPE:  # Jos näppäin on ESC
+                    pygame.quit()
+                    sys.exit()
+        
     # Pelaaja painaa näppäintä
     nappaimet = pygame.key.get_pressed()
 
