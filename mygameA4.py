@@ -23,6 +23,7 @@ musta = (0,0,0)
 # Ladattavat objektit
 hahmo = pygame.image.load("hahmo.jpg").convert()
 matikka = pygame.image.load("matikka.jpg").convert()
+taustakuva = pygame.image.load('matikkaa.jpeg').convert()
 # Looppaa musiikkia
 mixer.music.play(-1,0.0)
 
@@ -56,54 +57,59 @@ nopeus = 10
 x = leveys // 2  # Hahmon X-positio, keskellä näyttöä
 y = korkeus - hahmo.get_height() - taso.get_height()  #  Hahmon Y-positio, asetettuna tason päälle
 
-start_screen_image = pygame.image.load('matikkaa.jpeg')
-naytto.blit(start_screen_image, (-60, -75))
-pygame.display.update()
+# Asetetaan taustakuva
+naytto.blit(taustakuva, (-60, -75))
 
-def difficulty_menu():
-    difficulty_menu = True
-    button_font = pygame.font.SysFont('Arial', 20)
-    easy_button = pygame.Rect(leveys//2 - 50, korkeus//2, 100, 50)  # Easy button
-    hard_button = pygame.Rect(leveys//2 - 50, korkeus//2 + 60, 100, 50)  # Hard button
+# Asetetaan funktio vaikeusastevalikolle
+def vaikeusasteet():
+    vaikeusasteet = True
+    fontti = pygame.font.SysFont('Arial', 20)
+    # Nappeja vaikeusasteille, insinööri ja calculus
+    insinoori_button = pygame.Rect(leveys//2 - 50, korkeus//2, 100, 50)
+    calculus_button = pygame.Rect(leveys//2 - 50, korkeus//2 + 60, 100, 50)
+    # Tekstit vaikeusasteille, insinööri ja calculus
+    insinoori_text = fontti.render('Insinööri', True, (255, 255, 255))
+    calculus_text = fontti.render('Calculus ', True, (255, 255, 255))
 
-    easy_text = button_font.render('Insinööri', True, (255, 255, 255))  # valkoinen
-    hard_text = button_font.render('Calculus ', True, (255, 255, 255))  # valkoinen
-
-    while difficulty_menu:
+    while vaikeusasteet:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            # Jos painetaan hiiren nappia
             if event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = event.pos  # gets mouse position
-                # checks if mouse position is over the button
-                if easy_button.collidepoint(mouse_pos):
-                    print('Easy button was pressed at {0}'.format(mouse_pos))
-                    return 'easy'
-                    
-                if hard_button.collidepoint(mouse_pos):
-                    print('Hard button was pressed at {0}'.format(mouse_pos))
-                    return 'hard'
-                    # Add code here to set difficulty to hard
+                # Saadaan hiiren positio
+                mouse_pos = event.pos
+                # Katsotaan onko hiiri painettu insinööri-napin 
+                    # tai calculus-napin päällä
+                if insinoori_button.collidepoint(mouse_pos):
+                    return 'insinoori'
+                if calculus_button.collidepoint(mouse_pos):
+                    return 'calculus'
+                    # Vaikeusastekoodit!!!!! TODO
 
-        # draw button
-        pygame.draw.rect(naytto, [0, 0, 0], easy_button)  # draw button
-        pygame.draw.rect(naytto, [0, 0, 0], hard_button)  # draw button
+        # Piirretään napit näytölle
+        pygame.draw.rect(naytto, [0, 0, 0], insinoori_button)  
+        pygame.draw.rect(naytto, [0, 0, 0], calculus_button)
 
-        # draw text on buttons
-        naytto.blit(easy_text, (easy_button.x + (easy_button.width - easy_text.get_width()) // 2, easy_button.y + (easy_button.height - easy_text.get_height()) // 2))
-        naytto.blit(hard_text, (hard_button.x + (hard_button.width - hard_text.get_width()) // 2, hard_button.y + (hard_button.height - hard_text.get_height()) // 2))
-
+        # Piirretään tekstit nappien päälle
+        naytto.blit(insinoori_text, (insinoori_button.x + (insinoori_button.width - insinoori_text.get_width()) // 2, insinoori_button.y + (insinoori_button.height - insinoori_text.get_height()) // 2))
+        naytto.blit(calculus_text, (calculus_button.x + (calculus_button.width - calculus_text.get_width()) // 2, calculus_button.y + (calculus_button.height - calculus_text.get_height()) // 2))
+        
+        # Päivitetään muutokset
         pygame.display.update()
+
+# Funktio menu-screenille
 def main_menu():
     menu = True
-    button_font = pygame.font.SysFont('Arial', 20)
-    start_button = pygame.Rect(leveys//2 - 50, korkeus//2, 100, 50)  # Start button
-    quit_button = pygame.Rect(leveys//2 - 50, korkeus//2 + 60, 100, 50)  # Quit button
-    
+    fontti = pygame.font.SysFont('Arial', 20)
 
-    start_text = button_font.render('Start', True, (255, 255,255))  # valkoinen
-    quit_text = button_font.render('Quit', True, (255, 255, 255))  # valkoinen
+    # Aloitus ja lopetusnapit
+    start_button = pygame.Rect(leveys//2 - 50, korkeus//2, 100, 50) 
+    quit_button = pygame.Rect(leveys//2 - 50, korkeus//2 + 60, 100, 50)
+    # Nappien tekstit
+    start_text = fontti.render('Start', True, (255, 255,255))  # valkoinen
+    quit_text = fontti.render('Quit', True, (255, 255, 255))  # valkoinen
     
 
     while menu:
@@ -111,35 +117,40 @@ def main_menu():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            # Jos painetaan hiiren nappia
             if event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = event.pos  # gets mouse position
-                # checks if mouse position is over the button
+                # Saadaan hiiren positio
+                mouse_pos = event.pos
+                # Jos hiiri on painettaessa start-napin päällä
                 if start_button.collidepoint(mouse_pos):
-                    # prints current location of mouse
-                    print('button was pressed at {0}'.format(mouse_pos))
-                    return difficulty_menu()
+                    # Avataan vaikeusasteet-funktio
+                    return vaikeusasteet()
+                # Jos hiiri on painettaessa quit-napin päällä,
+                    # peli suljetaan
                 if quit_button.collidepoint(mouse_pos):
                     pygame.quit()
                     sys.exit()
                 
     
-        # Napit
-        pygame.draw.rect(naytto, [0, 0, 0], start_button)  # draw button
-        pygame.draw.rect(naytto, [0, 0, 0], quit_button)  # draw button
+        # Piirretään napit näytölle
+        pygame.draw.rect(naytto, [0, 0, 0], start_button)  
+        pygame.draw.rect(naytto, [0, 0, 0], quit_button) 
         
-        #Teksti napeille
+        # Piirretään tekstit napeille
         naytto.blit(start_text, (start_button.x + (start_button.width - start_text.get_width()) // 2, start_button.y + (start_button.height - start_text.get_height()) // 2))
         naytto.blit(quit_text, (quit_button.x + (quit_button.width - quit_text.get_width()) // 2, quit_button.y + (quit_button.height - quit_text.get_height()) // 2))
         
-        
+        # Päivitetään muutokset
         pygame.display.update()
 
-# Call the main menu function before your game loop
+# Kutsutaan main-menu funktiota ja tallennetaan
+        # paluuarvo muuttujaan difficulty (eli insinööri tai calculus)
 difficulty = main_menu()
+
 # Pelilogiikka, pyörii kunnes käyttäjä painaa ESC-näppäintä
 # tai sulkee välilehden, tai kun häviää tai voittaa
 while True:
-    if difficulty == 'easy':
+    if difficulty == 'insinoori':
     
         for event in pygame.event.get():  # Etsii tapahtumia
             if event.type == pygame.QUIT:  # Jos pelaaja sulkee ikkunan
